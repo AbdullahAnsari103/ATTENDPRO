@@ -826,65 +826,12 @@ app.get('/admin/attendance', requireAuth, requireAdmin, async (req, res) => {
     }
 });
 
-// Emergency admin creation route (hidden)
-app.get('/emergency-admin-creation/:secret', async (req, res) => {
-    try {
-        const { secret } = req.params;
-        
-        // Check if the secret matches the emergency code
-        if (secret !== process.env.EMERGENCY_SECRET || 'Abdullahuroojadilfatir231703') {
-            return res.status(403).send('Access Denied');
-        }
-        
-        // Check if any admin exists
-        const existingAdmin = await User.findOne({ ROLE: 'admin' });
-        if (existingAdmin) {
-            return res.send('Admin already exists. No emergency admin needed.');
-        }
-        
-        // Create emergency admin
-        const emergencyAdmin = new User({
-            USERNAME: 'ABDULLAH ANSARI UROOJ',
-            EMAIL: 'abdullahansariurooj@gmail.com',
-            PASSWORD: '9920867077@Adil',
-            FULLNAME: 'ABDULLAH ANSARI UROOJ',
-            ROLE: 'admin',
-            ISACTIVE: true
-        });
-        
-        await emergencyAdmin.save();
-        
-        res.send(`
-            <html>
-            <head><title>Emergency Admin Created</title></head>
-            <body style="font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0;">
-                <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <h1 style="color: #d32f2f;">🚨 Emergency Admin Created</h1>
-                    <p><strong>Username:</strong> ABDULLAH ANSARI UROOJ</p>
-                    <p><strong>Password:</strong> 9920867077@Adil</p>
-                    <p><strong>Email:</strong> abdullahansariurooj@gmail.com</p>
-                    <hr style="margin: 20px 0;">
-                    <h3>⚠️ Important Steps:</h3>
-                    <ol>
-                        <li>Login with these credentials</li>
-                        <li>Change the password immediately</li>
-                        <li>Create a proper admin user</li>
-                        <li>Delete this emergency admin</li>
-                    </ol>
-                    <a href="/login" style="background: #d32f2f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Go to Login</a>
-                </div>
-            </body>
-            </html>
-        `);
-        
-    } catch (err) {
-        console.error('Emergency admin creation error:', err);
-        res.status(500).send('Error creating emergency admin');
-    }
-});
+// Emergency admin creation route (removed for security)
+// Use environment variables for emergency admin creation
+// See SECURE_DEPLOYMENT.md for setup instructions
 
 // Secret admin route
-app.get('/9920867077@AdilAbullahaUroojFatir', requireAuth, requireAdmin, async (req, res) => {
+app.get('/admin-panel', requireAuth, requireAdmin, async (req, res) => {
     try {
         // Check if user is active
         if (!req.user.ISACTIVE) {
@@ -1045,55 +992,9 @@ app.get('/admin/attendance', requireAuth, requireAdmin, async (req, res) => {
     }
 });
 
-// Emergency admin creation route (hidden) - exact URL match
-app.get('/emergency-admin-creation...Abdullahuroojadilfatir231703', async (req, res) => {
-    try {
-        // Check if any admin exists
-        const existingAdmin = await User.findOne({ ROLE: 'admin' });
-        if (existingAdmin) {
-            return res.send('Admin already exists. No emergency admin needed.');
-        }
-        
-        // Create emergency admin
-        const emergencyAdmin = new User({
-            USERNAME: 'ABDULLAH ANSARI UROOJ',
-            EMAIL: 'abdullahansariurooj@gmail.com',
-            PASSWORD: '9920867077@Adil',
-            FULLNAME: 'ABDULLAH ANSARI UROOJ',
-            ROLE: 'admin',
-            ISACTIVE: true
-        });
-        
-        await emergencyAdmin.save();
-        
-        res.send(`
-            <html>
-            <head><title>Emergency Admin Created</title></head>
-            <body style="font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0;">
-                <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                    <h1 style="color: #d32f2f;">🚨 Emergency Admin Created</h1>
-                    <p><strong>Username:</strong> ABDULLAH ANSARI UROOJ</p>
-                    <p><strong>Password:</strong> 9920867077@Adil</p>
-                    <p><strong>Email:</strong> abdullahansariurooj@gmail.com</p>
-                    <hr style="margin: 20px 0;">
-                    <h3>⚠️ Important Steps:</h3>
-                    <ol>
-                        <li>Login with these credentials</li>
-                        <li>Change the password immediately</li>
-                        <li>Create a proper admin user</li>
-                        <li>Delete this emergency admin</li>
-                    </ol>
-                    <a href="/login" style="background: #d32f2f; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Go to Login</a>
-                </div>
-            </body>
-            </html>
-        `);
-        
-    } catch (err) {
-        console.error('Emergency admin creation error:', err);
-        res.status(500).send('Error creating emergency admin');
-    }
-});
+// Emergency admin creation route (removed for security)
+// Use environment variables for emergency admin creation
+// See SECURE_DEPLOYMENT.md for setup instructions
 
 // No admin access page - completely hidden
 
