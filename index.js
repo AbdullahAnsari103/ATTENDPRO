@@ -832,7 +832,7 @@ app.get('/emergency-admin-creation/:secret', async (req, res) => {
         const { secret } = req.params;
         
         // Check if the secret matches the emergency code
-        if (secret !== 'Abdullahuroojadilfatir231703') {
+        if (secret !== process.env.EMERGENCY_SECRET || 'Abdullahuroojadilfatir231703') {
             return res.status(403).send('Access Denied');
         }
         
