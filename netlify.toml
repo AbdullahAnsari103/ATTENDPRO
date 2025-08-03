@@ -1,0 +1,44 @@
+[build]
+  # Build command for Netlify
+  command = "npm install"
+  
+  # Publish directory (only public files)
+  publish = "public"
+  
+  # Functions directory (if needed)
+  functions = "functions"
+
+[build.environment]
+  # Environment variables for build
+  NODE_ENV = "production"
+
+# Redirects for SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for security
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+
+# Exclude sensitive files from deployment
+[[headers]]
+  for = "*.md"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+# Important: Netlify doesn't support Node.js server-side rendering
+# This is a static site deployment configuration
+# For full Node.js app, consider Railway, Heroku, or Render 

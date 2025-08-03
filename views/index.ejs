@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta name="description" content="Modern student attendance management system with real-time tracking">
+    <meta name="theme-color" content="#6366f1">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --background: #0a0a1a;
+            --surface: #0f0f23;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --border: rgba(99, 102, 241, 0.2);
+            --glow: rgba(99, 102, 241, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            color: var(--text-primary);
+            font-feature-settings: "cv11", "ss01";
+            font-variant: normal;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Enhanced Background with better performance */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        /* Optimized Grid Pattern */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridFlow 40s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes gridFlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -30px) rotate(0.5deg); }
+            50% { transform: translate(60px, 0px) rotate(0deg); }
+            75% { transform: translate(30px, 30px) rotate(-0.5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Enhanced Floating Shapes with improved performance */
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatComplex 25s infinite ease-in-out;
+            will-change: transform;
+            filter: blur(1px);
+        }
+
+        .shape:nth-child(1) {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.05), transparent);
+            top: -175px;
+            left: -175px;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.12), rgba(236, 72, 153, 0.04), transparent);
+            top: 20%;
+            right: -125px;
+            animation-delay: -8s;
+        }
+
+        .shape:nth-child(3) {
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1), rgba(6, 182, 212, 0.03), transparent);
+            bottom: -90px;
+            left: 30%;
+            animation-delay: -16s;
+        }
+
+        .shape:nth-child(4) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.1), rgba(99, 102, 241, 0.04), transparent);
+            top: 60%;
+            right: 20%;
+            animation-delay: -4s;
+        }
+
+        .shape:nth-child(5) {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.08), transparent);
+            top: 10%;
+            left: 60%;
+            animation-delay: -12s;
+        }
+
+        @keyframes floatComplex {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1); 
+                opacity: 0.3;
+            }
+            25% { 
+                transform: translate(120px, -80px) rotate(90deg) scale(1.1); 
+                opacity: 0.6;
+            }
+            50% { 
+                transform: translate(-60px, -120px) rotate(180deg) scale(0.9); 
+                opacity: 0.4;
+            }
+            75% { 
+                transform: translate(-120px, 60px) rotate(270deg) scale(1.05); 
+                opacity: 0.5;
+            }
+        }
+
+        /* Advanced Particle System */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleRise 20s linear infinite;
+            will-change: transform;
+        }
+
+        .particle:nth-child(odd) {
+            background: radial-gradient(circle, var(--primary), transparent);
+            width: 3px;
+            height: 3px;
+        }
+
+        .particle:nth-child(even) {
+            background: radial-gradient(circle, var(--secondary), transparent);
+            width: 2px;
+            height: 2px;
+        }
+
+        .particle:nth-child(3n) {
+            background: radial-gradient(circle, var(--accent), transparent);
+            width: 4px;
+            height: 4px;
+        }
+
+        @keyframes particleRise {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+                filter: blur(0px);
+            }
+            10% {
+                opacity: 1;
+            }
+            50% {
+                filter: blur(1px);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+                filter: blur(2px);
+            }
+        }
+
+        /* Enhanced Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Advanced Card Design */
+        .card {
+            background: rgba(15, 15, 35, 0.85);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            padding: 4rem;
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 80px rgba(99, 102, 241, 0.25),
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, 
+                var(--primary), 
+                var(--secondary), 
+                var(--accent), 
+                #06b6d4,
+                var(--primary));
+            border-radius: 35px;
+            z-index: -1;
+            background-size: 500% 500%;
+            animation: borderFlow 12s ease infinite;
+            opacity: 0.7;
+            filter: blur(1px);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1), transparent 50%);
+            border-radius: 32px;
+            pointer-events: none;
+        }
+
+        @keyframes borderFlow {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 
+                0 0 120px rgba(99, 102, 241, 0.4),
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        /* Enhanced Icon Design */
+        .icon-container {
+            position: relative;
+            margin: 0 auto 3rem;
+            width: 140px;
+            height: 140px;
+        }
+
+        .icon {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            position: relative;
+            animation: iconFloat 4s ease-in-out infinite;
+            box-shadow: 
+                0 25px 50px rgba(99, 102, 241, 0.4),
+                0 10px 20px rgba(0, 0, 0, 0.3),
+                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.4s ease;
+        }
+
+        .icon::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            right: -6px;
+            bottom: -6px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 41px;
+            z-index: -1;
+            animation: iconGlow 3s ease-in-out infinite alternate;
+            opacity: 0.6;
+            filter: blur(2px);
+        }
+
+        .icon::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 25px;
+            pointer-events: none;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg); 
+                filter: brightness(1);
+            }
+            50% { 
+                transform: translateY(-10px) rotate(2deg); 
+                filter: brightness(1.1);
+            }
+        }
+
+        @keyframes iconGlow {
+            0% { 
+                box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+                transform: scale(1);
+            }
+            100% { 
+                box-shadow: 0 0 60px rgba(99, 102, 241, 0.8);
+                transform: scale(1.02);
+            }
+        }
+
+        /* Enhanced Typography */
+        h1 {
+            font-size: 3.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #e2e8f0 50%, #cbd5e1 75%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            position: relative;
+            animation: textShimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes textShimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 3.5rem;
+            font-weight: 400;
+            line-height: 1.6;
+            opacity: 0.95;
+            letter-spacing: 0.01em;
+        }
+
+        /* Advanced Button Design */
+        .btn-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1.4rem 3.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 20px 40px rgba(99, 102, 241, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.8s ease;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 30px 60px rgba(99, 102, 241, 0.5),
+                0 15px 30px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .btn:active {
+            transform: translateY(-3px) scale(1.01);
+        }
+
+        /* Enhanced Decorative Elements */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            animation: twinkleAdvanced 4s ease-in-out infinite;
+            filter: blur(0.5px);
+        }
+
+        .decoration:nth-child(1) {
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, var(--primary), transparent);
+            top: 15%;
+            left: 8%;
+            animation-delay: 0s;
+        }
+
+        .decoration:nth-child(2) {
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, var(--secondary), transparent);
+            top: 25%;
+            right: 12%;
+            animation-delay: 1.5s;
+        }
+
+        .decoration:nth-child(3) {
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, var(--accent), transparent);
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 3s;
+        }
+
+        .decoration:nth-child(4) {
+            width: 7px;
+            height: 7px;
+            background: radial-gradient(circle, #06b6d4, transparent);
+            bottom: 35%;
+            right: 8%;
+            animation-delay: 0.8s;
+        }
+
+        @keyframes twinkleAdvanced {
+            0%, 100% { 
+                opacity: 0.3; 
+                transform: scale(1) rotate(0deg); 
+                filter: blur(0.5px);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.8) rotate(180deg); 
+                filter: blur(0px);
+            }
+        }
+
+        /* Performance Optimizations */
+        .shape,
+        .particle,
+        .decoration {
+            will-change: transform;
+        }
+
+        /* Accessibility Improvements */
+        .btn:focus-visible {
+            outline: 3px solid rgba(99, 102, 241, 0.6);
+            outline-offset: 4px;
+        }
+
+        .card:focus-within {
+            outline: 2px solid rgba(99, 102, 241, 0.5);
+            outline-offset: 8px;
+        }
+
+        /* Enhanced Responsive Design */
+        @media (min-width: 1400px) {
+            .card {
+                max-width: 750px;
+                padding: 5.5rem;
+            }
+
+            h1 {
+                font-size: 4.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.6rem;
+            }
+
+            .icon {
+                width: 160px;
+                height: 160px;
+                font-size: 4rem;
+            }
+
+            .icon-container {
+                width: 160px;
+                height: 160px;
+            }
+
+            .btn {
+                padding: 1.6rem 4rem;
+                font-size: 1.35rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .container {
+                padding: 1rem;
+                min-height: 100vh;
+            }
+
+            .card {
+                padding: 2.5rem 2rem;
+                border-radius: 24px;
+                max-width: 100%;
+            }
+
+            .card::before {
+                border-radius: 27px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                line-height: 1.2;
+                margin-bottom: 1rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 2.5rem;
+                line-height: 1.5;
+            }
+
+            .btn {
+                padding: 1.1rem 2.5rem;
+                font-size: 1.1rem;
+                border-radius: 40px;
+                letter-spacing: 1px;
+            }
+
+            .icon {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+                border-radius: 24px;
+            }
+
+            .icon-container {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 2rem;
+            }
+
+            /* Reduce animations for better mobile performance */
+            .shape:nth-child(n+4) {
+                display: none;
+            }
+
+            .particle:nth-child(n+6) {
+                display: none;
+            }
+
+            .grid-bg {
+                background-size: 40px 40px;
+                animation-duration: 60s;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 2rem 1.5rem;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                letter-spacing: -0.02em;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+                border-radius: 35px;
+            }
+
+            .icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+                border-radius: 20px;
+            }
+
+            .icon-container {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .shape,
+            .grid-bg,
+            .particle,
+            .decoration,
+            .btn::before,
+            .card::before {
+                animation: none !important;
+            }
+        }
+
+        /* High contrast support */
+        @media (prefers-contrast: high) {
+            .card {
+                border: 3px solid var(--primary);
+                background: rgba(0, 0, 0, 0.95);
+            }
+
+            h1 {
+                -webkit-text-fill-color: white;
+                background: none;
+            }
+
+            .btn {
+                background: var(--primary);
+                border: 2px solid white;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0;
+            animation: fadeInPage 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeInPage {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="loading">
+    <!-- Enhanced Animated Background -->
+    <div class="bg-animation">
+        <div class="grid-bg"></div>
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Optimized Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 5%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 15%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 25%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 35%; animation-delay: 9s;"></div>
+        <div class="particle" style="left: 45%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 55%; animation-delay: 15s;"></div>
+        <div class="particle" style="left: 65%; animation-delay: 18s;"></div>
+        <div class="particle" style="left: 75%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 85%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 95%; animation-delay: 7s;"></div>
+    </div>
+
+    <main class="container">
+        <article class="card">
+            <!-- Enhanced Decorative Elements -->
+            <div class="decoration"></div>
+            <div class="decoration"></div>
+            <div class="decoration"></div>
+            <div class="decoration"></div>
+
+            <div class="icon-container">
+                <div class="icon" aria-label="Student Attendance System Icon">📚</div>
+            </div>
+
+            <h1>Welcome to<br>AttendPro</h1>
+            <p class="subtitle">Transform your classroom management with our advanced, real-time attendance tracking platform</p>
+
+            <div class="btn-container">
+                <a href="/classlist" aria-label="Enter Class Section to manage attendance">
+                    <button class="btn" type="button">Enter Class Section</button>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <script>
+        // Performance optimized animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove loading class to trigger fade-in
+            document.body.classList.remove('loading');
+
+            // Enhanced mouse interaction with throttling
+            let ticking = false;
+            
+            function updateMousePosition(e) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                const shapes = document.querySelectorAll('.shape');
+                const particles = document.querySelectorAll('.particle');
+                
+                shapes.forEach((shape, index) => {
+                    const speed = (index + 1) * 0.2;
+                    const translateX = x * speed * 10;
+                    const translateY = y * speed * 10;
+                    shape.style.transform = `translate(${translateX}px, ${translateY}px)`;
+                });
+
+                // Parallax effect on grid
+                const grid = document.querySelector('.grid-bg');
+                grid.style.transform = `translate(${x * 5}px, ${y * 5}px)`;
+                
+                ticking = false;
+            }
+
+            function requestTick(e) {
+                if (!ticking) {
+                    requestAnimationFrame(() => updateMousePosition(e));
+                    ticking = true;
+                }
+            }
+
+            document.addEventListener('mousemove', requestTick);
+
+            // Enhanced button interactions
+            const button = document.querySelector('.btn');
+            
+            button.addEventListener('mouseenter', function() {
+                this.style.filter = 'brightness(1.15) saturate(1.1)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.filter = 'brightness(1) saturate(1)';
+            });
+
+            // Ripple effect
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+                ripple.style.borderRadius = '50%';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+
+            // Intersection Observer for performance
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    } else {
+                        entry.target.style.animationPlayState = 'paused';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe animated elements
+            document.querySelectorAll('.shape, .particle, .decoration').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Preload critical resources
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'style';
+            link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap';
+            document.head.appendChild(link);
+        });
+
+        // Add custom ripple animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Performance monitoring (optional)
+        if ('performance' in window) {
+            window.addEventListener('load', () => {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+            });
+        }
+    </script>
+</body>
+</html>
