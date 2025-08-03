@@ -831,7 +831,7 @@ app.get('/admin/attendance', requireAuth, requireAdmin, async (req, res) => {
 // See SECURE_DEPLOYMENT.md for setup instructions
 
 // Secret admin route
-app.get('/admin-panel', requireAuth, requireAdmin, async (req, res) => {
+app.get('/admin-panel9920867077@AdilAbullahaUroojFatir', requireAuth, requireAdmin, async (req, res) => {
     try {
         // Check if user is active
         if (!req.user.ISACTIVE) {
