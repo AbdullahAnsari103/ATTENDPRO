@@ -34,4 +34,4 @@ Students can scan QR codes to register for classes automatically.
 
 ---
 
-**AttendPro** - Making attendance management simple and efficient! 🎓 
+**AttendPro** - Making attendance management simple and efficient! 🎓
