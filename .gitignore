@@ -1,34 +1,50 @@
-# Dependencies
-node_modules/
+# ==============================================
+# AttendPro .gitignore - Production Security
+# ==============================================
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+config/secrets.js
+secrets/
+private-keys/
+
+# Logs and sensitive data
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+security-audit.log
+error.log
+combined.log
+exceptions.log
+rejections.log
 
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Database dumps and backups
+*.sql
+*.dump
+*.backup
+backups/
+db-exports/
 
-# Sensitive documentation files
-DEPLOYMENT.md
-LIVE_DEPLOYMENT_GUIDE.md
-FINAL_DEPLOYMENT_CHECKLIST.md
-EMERGENCY_RECOVERY.md
-about.md
+# Uploaded files and user content
+uploads/
+user-uploads/
+profile-pictures/
+temp-files/
 
-# Admin scripts
-emergency-admin.js
-create-admin.js
-get-ip.js
-
-# Configuration files
-config.js
-
-# Logs
-logs
-*.log
+# SSL certificates and keys
+*.pem
+*.key
+*.crt
+*.cert
+ssl/
+certs/
+private/
 
 # Runtime data
 pids
@@ -37,35 +53,49 @@ pids
 *.pid.lock
 
 # Coverage directory used by tools like istanbul
-coverage/
-
-# nyc test coverage
+coverage
+*.lcov
 .nyc_output
 
 # Dependency directories
 node_modules/
 jspm_packages/
+bower_components/
+web_modules/
 
-# Optional npm cache directory
+# Build outputs
+build/
+dist/
+.next/
+out/
+.nuxt/
+.vuepress/dist
+.serverless/
+
+# Cache directories
 .npm
+.eslintcache
+.stylelintcache
+.cache
+.parcel-cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# TypeScript
+*.tsbuildinfo
 
 # Optional REPL history
 .node_repl_history
 
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
+# Yarn
 .yarn-integrity
-
-# dotenv environment variables file
-.env
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
 # OS generated files
 .DS_Store
@@ -74,4 +104,58 @@ jspm_packages/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db 
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Local configuration overrides
+config/local.js
+config/production.local.js
+local-config/
+
+# Testing
+.fusebox/
+.dynamodb/
+.tern-port
+
+# Documentation build
+docs/build/
+
+# Docker
+.dockerignore
+Dockerfile.local
+docker-compose.override.yml
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Package files
+*.tgz
+
+# Debug files
+debug.log
+*.debug
+
+# ==============================================
+# NEVER COMMIT THESE FILES
+# ==============================================
+# admin-credentials.txt
+# database-passwords.txt
+# api-keys.txt
+# private-docs/
+# sensitive-scripts/

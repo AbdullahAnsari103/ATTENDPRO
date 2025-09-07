@@ -194,12 +194,45 @@
     <div class="container">
         <a href="/classlist" class="nav-btn back-btn">← Back to Class List</a>
         
+        <% if (joinedMessage) { %>
+            <div style="background: linear-gradient(135deg, #d4edda, #c3e6cb); color: #155724; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #c3e6cb; animation: slideInDown 0.5s ease-out;">
+                <i class="fas fa-check-circle"></i> <%= joinedMessage %>
+            </div>
+        <% } %>
+        
         <h1>Class Detail</h1>
         <div class="class-info">
             <p><strong>Class Name:</strong> <%= classDetail.CLASSNAME %></p>
             <p><strong>Room Number:</strong> <%= classDetail.ROOMNO %></p>
             <p><strong>Subject:</strong> <%= classDetail.SUBJECT %></p>
             <p><strong>Total Students:</strong> <%= students.length %></p>
+            
+            <div style="background: linear-gradient(135deg, #fff3cd, #ffeaa7); padding: 15px; border-radius: 10px; margin: 15px 0; border: 2px solid #ffc107;">
+                <p style="margin: 0; color: #856404;"><strong><i class="fas fa-key"></i> Class Code:</strong> 
+                    <span style="font-family: 'Courier New', monospace; font-size: 1.2em; font-weight: bold; letter-spacing: 2px; background: white; padding: 5px 10px; border-radius: 5px; margin-left: 10px;"><%= classDetail.CLASSCODE %></span>
+                    <button onclick="copyClassCode()" style="background: #ffc107; border: none; color: white; padding: 5px 10px; border-radius: 5px; margin-left: 10px; cursor: pointer;" title="Copy class code">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </p>
+                <small style="color: #856404; display: block; margin-top: 8px;">
+                    <i class="fas fa-info-circle"></i> Share this code with other teachers to give them access to this class
+                </small>
+            </div>
+            
+            <% if (classDetail.TEACHERS && classDetail.TEACHERS.length > 0) { %>
+                <p><strong><i class="fas fa-chalkboard-teacher"></i> Teachers:</strong></p>
+                <div style="margin-left: 20px;">
+                    <% classDetail.TEACHERS.forEach(teacher => { %>
+                        <div style="background: #f8f9fa; padding: 8px 12px; border-radius: 8px; margin: 5px 0; border-left: 3px solid #667eea;">
+                            <i class="fas fa-user"></i> <%= teacher.NAME %> 
+                            <% if (teacher._id.toString() === classDetail.CREATEDBY.toString()) { %>
+                                <span style="background: #667eea; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; margin-left: 8px;">Creator</span>
+                            <% } %>
+                            <small style="color: #666; margin-left: 10px;"><%= teacher.EMAIL %></small>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } %>
         </div>
         
                     <div class="nav-buttons">
@@ -207,7 +240,47 @@
                 <a href="/classdetail/<%= classDetail._id %>/student-registration" class="nav-btn">📱 QR Registration</a>
                 <a href="/classdetail/<%= classDetail._id %>/attendance-mark" class="nav-btn">Mark Attendance</a>
                 <a href="/classdetail/<%= classDetail._id %>/attendance-report" class="nav-btn">View Reports</a>
+                <a href="/teacher-students-summary?classId=<%= classDetail._id %>" class="nav-btn">👥 Students Summary</a>
+                <a href="/generate-attendance-report?classId=<%= classDetail._id %>" class="nav-btn">📊 Generate Report</a>
+                <a href="/classdetail/<%= classDetail._id %>/timetable" class="nav-btn">🕒 Manage Timetable</a>
             </div>
     </div>
+    
+    <script>
+        function copyClassCode() {
+            const classCode = '<%= classDetail.CLASSCODE %>';
+            navigator.clipboard.writeText(classCode).then(() => {
+                // Show success message
+                const button = event.target.closest('button');
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '#ffc107';
+                }, 2000);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = classCode;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Show success message
+                const button = event.target.closest('button');
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '#ffc107';
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 </html>

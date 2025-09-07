@@ -324,11 +324,35 @@
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+            margin-left: 10px;
         }
 
         .delete-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .qr-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            margin-left: 10px;
+        }
+
+        .qr-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .student-actions {
+            display: flex;
+            align-items: center;
         }
 
         .success-message {
@@ -502,7 +526,12 @@
                                 <div class="student-name"><%= student.NAME %></div>
                                 <div class="student-roll">Roll No: <%= student.ROLLNO %></div>
                             </div>
-                            <button class="delete-btn" onclick="deleteStudent('<%= student._id %>')">Delete</button>
+                            <div class="student-actions">
+                                <button class="qr-btn" onclick="generateQR('<%= student._id %>', '<%= student.NAME %>', '<%= student.ROLLNO %>')">
+                                    📱 QR Code
+                                </button>
+                                <button class="delete-btn" onclick="deleteStudent('<%= student._id %>')">Delete</button>
+                            </div>
                         </div>
                     <% }); %>
                 <% } else { %>
@@ -716,7 +745,12 @@
                     <div class="student-name">${student.NAME}</div>
                     <div class="student-roll">Roll No: ${student.ROLLNO}</div>
                 </div>
-                <button class="delete-btn" onclick="deleteStudent('${student._id}')">Delete</button>
+                <div class="student-actions">
+                    <button class="qr-btn" onclick="generateQR('${student._id}', '${student.NAME}', '${student.ROLLNO}')">
+                        📱 QR Code
+                    </button>
+                    <button class="delete-btn" onclick="deleteStudent('${student._id}')">Delete</button>
+                </div>
             `;
             
             container.appendChild(studentElement);
@@ -738,6 +772,268 @@
             setTimeout(() => {
                 messageElement.remove();
             }, 5000);
+        }
+
+        // Generate QR Code for student
+        async function generateQR(studentId, studentName, rollNo) {
+            try {
+                const response = await fetch(`/student/${studentId}/qrcode`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    showQRModal(data.qrCode, data.portalUrl, studentName, rollNo);
+                } else {
+                    showMessage('Failed to generate QR code: ' + data.error, 'error');
+                }
+            } catch (error) {
+                console.error('Error generating QR code:', error);
+                showMessage('Failed to generate QR code', 'error');
+            }
+        }
+
+        // Show QR Code Modal
+        function showQRModal(qrCodeDataUrl, portalUrl, studentName, rollNo) {
+            // Remove existing modal if any
+            const existingModal = document.getElementById('qrModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            // Create modal
+            const modal = document.createElement('div');
+            modal.id = 'qrModal';
+            modal.innerHTML = `
+                <div class="qr-modal-overlay" onclick="closeQRModal()">
+                    <div class="qr-modal-content" onclick="event.stopPropagation()">
+                        <div class="qr-modal-header">
+                            <h3>📱 QR Code for ${studentName}</h3>
+                            <button class="qr-modal-close" onclick="closeQRModal()">×</button>
+                        </div>
+                        <div class="qr-modal-body">
+                            <div class="qr-code-display">
+                                <img src="${qrCodeDataUrl}" alt="Student Portal QR Code" />
+                            </div>
+                            <div class="qr-info">
+                                <p><strong>Student:</strong> ${studentName}</p>
+                                <p><strong>Roll No:</strong> ${rollNo}</p>
+                                <p class="qr-instructions">
+                                    <i>📱 Students can scan this QR code to instantly access their portal</i>
+                                </p>
+                                <div class="qr-actions">
+                                    <button class="qr-download-btn" onclick="downloadQRCode('${qrCodeDataUrl}', '${rollNo}')">
+                                        📥 Download QR Code
+                                    </button>
+                                    <button class="qr-share-btn" onclick="shareQRCode('${portalUrl}', '${studentName}', '${rollNo}')">
+                                        🔗 Share Link
+                                    </button>
+                                </div>
+                                <div class="qr-url">
+                                    <small>Direct Link: <a href="${portalUrl}" target="_blank">${portalUrl}</a></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+            
+            // Add modal styles
+            const modalStyle = document.createElement('style');
+            modalStyle.textContent = `
+                .qr-modal-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                    animation: fadeIn 0.3s ease;
+                }
+                
+                .qr-modal-content {
+                    background: white;
+                    border-radius: 20px;
+                    max-width: 500px;
+                    width: 90%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    animation: slideInUp 0.3s ease;
+                }
+                
+                .qr-modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 20px 25px;
+                    border-bottom: 1px solid #dee2e6;
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    color: white;
+                    border-radius: 20px 20px 0 0;
+                }
+                
+                .qr-modal-header h3 {
+                    margin: 0;
+                    font-size: 1.2rem;
+                }
+                
+                .qr-modal-close {
+                    background: none;
+                    border: none;
+                    color: white;
+                    font-size: 24px;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    transition: background 0.3s ease;
+                }
+                
+                .qr-modal-close:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                }
+                
+                .qr-modal-body {
+                    padding: 25px;
+                    text-align: center;
+                }
+                
+                .qr-code-display {
+                    margin-bottom: 20px;
+                }
+                
+                .qr-code-display img {
+                    max-width: 256px;
+                    width: 100%;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                }
+                
+                .qr-info p {
+                    margin: 10px 0;
+                    color: #495057;
+                }
+                
+                .qr-instructions {
+                    background: #e3f2fd;
+                    padding: 15px;
+                    border-radius: 10px;
+                    color: #0d47a1 !important;
+                    margin: 20px 0 !important;
+                }
+                
+                .qr-actions {
+                    display: flex;
+                    gap: 10px;
+                    justify-content: center;
+                    margin: 20px 0;
+                    flex-wrap: wrap;
+                }
+                
+                .qr-download-btn, .qr-share-btn {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                }
+                
+                .qr-download-btn {
+                    background: linear-gradient(135deg, #28a745, #20c997);
+                    color: white;
+                }
+                
+                .qr-share-btn {
+                    background: linear-gradient(135deg, #007bff, #0056b3);
+                    color: white;
+                }
+                
+                .qr-download-btn:hover, .qr-share-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                }
+                
+                .qr-url {
+                    margin-top: 15px;
+                    padding-top: 15px;
+                    border-top: 1px solid #dee2e6;
+                }
+                
+                .qr-url a {
+                    color: #667eea;
+                    text-decoration: none;
+                    word-break: break-all;
+                }
+                
+                .qr-url a:hover {
+                    text-decoration: underline;
+                }
+                
+                @keyframes slideInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `;
+            document.head.appendChild(modalStyle);
+        }
+
+        // Close QR Modal
+        function closeQRModal() {
+            const modal = document.getElementById('qrModal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        }
+
+        // Download QR Code
+        function downloadQRCode(qrCodeDataUrl, rollNo) {
+            const link = document.createElement('a');
+            link.download = `student-qr-${rollNo}.png`;
+            link.href = qrCodeDataUrl;
+            link.click();
+        }
+
+        // Share QR Code
+        function shareQRCode(portalUrl, studentName, rollNo) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Student Portal Access',
+                    text: `Access student portal for ${studentName} (Roll: ${rollNo})`,
+                    url: portalUrl
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(portalUrl).then(() => {
+                    showMessage('Link copied to clipboard!', 'success');
+                }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = portalUrl;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showMessage('Link copied to clipboard!', 'success');
+                });
+            }
         }
 
         // Add CSS for animations

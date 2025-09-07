@@ -1,22 +1,56 @@
 {
-  "name": "practice",
-  "version": "1.0.0",
+  "name": "attendpro",
+  "version": "2.0.0",
+  "description": "Professional attendance management system with QR code support",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "security:audit": "npm audit",
+    "security:check": "npm audit --audit-level moderate",
+    "logs:clean": "node -e \"require('./utils/logger').cleanupLogs()\"",
+    "db:migrate": "node scripts/migrate.js",
+    "build": "npm run lint && npm run test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "attendance",
+    "management",
+    "qr-code",
+    "education",
+    "tracking",
+    "students",
+    "teachers"
+  ],
+  "author": "AttendPro Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "connect-mongo": "^5.1.0",
+    "cors": "^2.8.5",
     "ejs": "^3.1.10",
-    "express": "^5.1.0",
-    "express-session": "^1.18.2",
+    "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.1.5",
+    "express-session": "^1.17.3",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
     "mongoose": "^8.17.0",
-    "nodemon": "^3.1.10"
+    "qrcode": "^1.5.4",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^6.3.3"
   }
 }

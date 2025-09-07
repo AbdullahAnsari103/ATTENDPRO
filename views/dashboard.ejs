@@ -4,374 +4,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - AttendPro</title>
+    <link rel="icon" type="image/png" href="/attend.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
+            background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .animated-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #ff6b6b 50%, #4ecdc4 75%, #45b7d1 100%);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
         }
         
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 20px 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .logout-btn {
-            background: linear-gradient(135deg, #dc3545, #c82333);
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .welcome-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: slideInUp 0.6s ease-out;
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .welcome-title {
-            font-size: 28px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .welcome-subtitle {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
         .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
             text-align: center;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.8s ease-out;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border-left: 4px solid #007bff;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
-
-        .stat-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
+        
         .stat-number {
-            font-size: 32px;
+            font-size: 2.5rem;
             font-weight: bold;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #007bff;
         }
-
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .action-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-            transition: all 0.3s ease;
-            animation: fadeIn 0.8s ease-out 0.2s both;
-        }
-
-        .action-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .action-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-
-        .action-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .action-description {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .action-btn {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-            padding: 12px 25px;
-            border: none;
+        
+        .quick-action {
+            background: white;
             border-radius: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
             text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+            color: inherit;
         }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        
+        .quick-action:hover {
+            transform: translateY(-3px);
+            text-decoration: none;
+            color: inherit;
         }
-
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .shape:nth-child(1) {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            border-radius: 50%;
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(45deg, #4834d4, #686de0);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            top: 60%;
-            right: 15%;
-            animation-delay: -2s;
-        }
-
-        .shape:nth-child(3) {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #00d2d3, #54a0ff);
-            border-radius: 20px;
-            top: 40%;
-            left: 80%;
-            animation-delay: -4s;
-            transform: rotate(45deg);
-        }
-
-        @keyframes float {
-            0%, 100% { 
-                transform: translateY(0px) rotate(0deg); 
-            }
-            50% { 
-                transform: translateY(-30px) rotate(180deg); 
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions-grid {
-                grid-template-columns: 1fr;
-            }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
     </style>
 </head>
 <body>
-    <div class="animated-background"></div>
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-
     <%- include('partials/navbar') %>
-
-    <div class="container">
-        <div class="welcome-section">
-            <h1 class="welcome-title">Welcome to AttendPro Dashboard</h1>
-            <p class="welcome-subtitle">Manage your classes, students, and attendance with ease.</p>
+    
+    <div class="container mt-4">
+        <!-- Welcome Section -->
+        <div class="welcome-card">
+            <h1><i class="fas fa-user-circle"></i> Welcome, <%= user.FULLNAME %>!</h1>
+            <p class="mb-0">Role: <strong><%= user.ROLE.charAt(0).toUpperCase() + user.ROLE.slice(1) %></strong></p>
         </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📚</div>
-                <div class="stat-number"><%= stats.classes %></div>
-                <div class="stat-label">Total Classes</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-number"><%= stats.students %></div>
-                <div class="stat-label">Total Students</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-number"><%= stats.attendance %></div>
-                <div class="stat-label">Attendance Records</div>
-            </div>
+        
+        <!-- Stats Section -->
+        <div class="row mb-4">
+            <% if (user.ROLE === 'admin') { %>
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><%= totalUsers || 0 %></div>
+                        <div>Total Users</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><%= totalClasses || 0 %></div>
+                        <div>Total Classes</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><%= totalStudents || 0 %></div>
+                        <div>Total Students</div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><%= totalAttendance || 0 %></div>
+                        <div>Attendance Records</div>
+                    </div>
+                </div>
+            <% } else if (user.ROLE === 'teacher') { %>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><%= myClasses || 0 %></div>
+                        <div>My Classes</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><%= myStudents || 0 %></div>
+                        <div>My Students</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number"><%= todayAttendance || 0 %></div>
+                        <div>Today's Attendance</div>
+                    </div>
+                </div>
+            <% } %>
         </div>
-
-        <div class="actions-grid">
-            <div class="action-card">
-                <div class="action-icon">➕</div>
-                <h3 class="action-title">Create New Class</h3>
-                <p class="action-description">Add a new class to start managing attendance and students.</p>
-                <a href="/createclass" class="action-btn">Create Class</a>
+        
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mb-3"><i class="fas fa-bolt"></i> Quick Actions</h3>
             </div>
-
-            <div class="action-card">
-                <div class="action-icon">📋</div>
-                <h3 class="action-title">View All Classes</h3>
-                <p class="action-description">See all your classes and manage them efficiently.</p>
-                <a href="/classlist" class="action-btn">View Classes</a>
-            </div>
-
+            
+            <% if (user.ROLE === 'admin') { %>
+                <div class="col-md-3 mb-3">
+                    <a href="/admin-panel9920867077@AdilAbullahaUroojFatir" class="quick-action d-block">
+                        <i class="fas fa-cogs fa-2x mb-2 text-primary"></i>
+                        <h5>Admin Panel</h5>
+                        <p class="text-muted">Manage system</p>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="/classlist" class="quick-action d-block">
+                        <i class="fas fa-list fa-2x mb-2 text-success"></i>
+                        <h5>View Classes</h5>
+                        <p class="text-muted">All classes</p>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="/createclass" class="quick-action d-block">
+                        <i class="fas fa-plus fa-2x mb-2 text-info"></i>
+                        <h5>Create Class</h5>
+                        <p class="text-muted">New class</p>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="/teacher-students-summary" class="quick-action d-block">
+                        <i class="fas fa-chart-bar fa-2x mb-2 text-warning"></i>
+                        <h5>Reports</h5>
+                        <p class="text-muted">View reports</p>
+                    </a>
+                </div>
+            <% } else if (user.ROLE === 'teacher') { %>
+                <div class="col-md-4 mb-3">
+                    <a href="/classlist" class="quick-action d-block">
+                        <i class="fas fa-chalkboard fa-2x mb-2 text-primary"></i>
+                        <h5>My Classes</h5>
+                        <p class="text-muted">Manage classes</p>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <a href="/createclass" class="quick-action d-block">
+                        <i class="fas fa-plus-circle fa-2x mb-2 text-success"></i>
+                        <h5>Create Class</h5>
+                        <p class="text-muted">Add new class</p>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <a href="/teacher-students-summary" class="quick-action d-block">
+                        <i class="fas fa-chart-line fa-2x mb-2 text-info"></i>
+                        <h5>Student Reports</h5>
+                        <p class="text-muted">View attendance</p>
+                    </a>
+                </div>
+            <% } else { %>
+                <div class="col-md-6 mb-3">
+                    <a href="/student-portal" class="quick-action d-block">
+                        <i class="fas fa-user-graduate fa-2x mb-2 text-primary"></i>
+                        <h5>Student Portal</h5>
+                        <p class="text-muted">Check attendance</p>
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="/student-attendance-summary" class="quick-action d-block">
+                        <i class="fas fa-chart-pie fa-2x mb-2 text-success"></i>
+                        <h5>My Attendance</h5>
+                        <p class="text-muted">View summary</p>
+                    </a>
+                </div>
+            <% } %>
         </div>
     </div>
-
-    <script>
-        // No admin shortcuts visible in code
-        // Contact support: 9920867077@AdilAbullahaUroojFatir for technical issues
-        // Emergency contact: emergency-admin-creation...Abdullahuroojadilfatir231703 for system recovery
-    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - AttendPro</title>
+    <link rel="icon" type="image/png" href="/attend.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .portal-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .portal-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .portal-header h2 {
+            color: #007bff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem;
+            transition: border-color 0.2s;
+            font-size: 1.1rem;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+        
+        .btn-portal {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: transform 0.2s;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        
+        .btn-portal:hover {
+            transform: translateY(-2px);
+        }
+        
+        .quick-links {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .quick-link {
+            display: block;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #495057;
+            background: #f8f9fa;
+            transition: all 0.2s;
+        }
+        
+        .quick-link:hover {
+            background: #e9ecef;
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-card">
+        <div class="portal-header">
+            <h2><i class="fas fa-user-graduate"></i> Student Portal</h2>
+            <p class="text-muted">Enter your roll number to access your dashboard</p>
+        </div>
+        
+        <% if (typeof message !== 'undefined' && message) { %>
+            <div class="alert alert-<%= messageType || 'info' %>">
+                <i class="fas fa-info-circle"></i> <%= message %>
+            </div>
+        <% } %>
+        
+        <form action="/student-portal" method="POST">
+            <div class="form-group">
+                <label for="rollno" class="form-label">
+                    <i class="fas fa-id-card"></i> Roll Number
+                </label>
+                <input type="text" 
+                       class="form-control" 
+                       id="rollno" 
+                       name="rollno" 
+                       placeholder="Enter your roll number (e.g., 2023001)"
+                       value="<%= typeof rollno !== 'undefined' ? rollno : '' %>"
+                       required>
+                <div class="form-text">
+                    Enter the roll number provided by your teacher
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-portal">
+                <i class="fas fa-sign-in-alt"></i> Access Dashboard
+            </button>
+        </form>
+        
+        <div class="quick-links">
+            <h6 class="text-muted mb-3">Quick Access</h6>
+            
+            <a href="/student-attendance-summary" class="quick-link">
+                <i class="fas fa-chart-line"></i> Check Attendance Summary
+                <small class="d-block text-muted">View attendance without login</small>
+            </a>
+            
+            <a href="/login" class="quick-link">
+                <i class="fas fa-user"></i> Teacher/Admin Login
+                <small class="d-block text-muted">Access teacher dashboard</small>
+            </a>
+        </div>
+        
+        <div class="text-center mt-3">
+            <small class="text-muted">
+                <i class="fas fa-question-circle"></i> 
+                Need help? Contact your teacher for your roll number.
+            </small>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

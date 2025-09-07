@@ -1,35 +1,48 @@
-<header class="header">
+<nav class="navbar">
     <div class="nav-container">
-        <div class="logo">
-            <a href="/dashboard" class="logo-link">📊 AttendPro</a>
+        <!-- Logo -->
+        <div class="nav-logo">
+            <a href="/dashboard">📚 AttendPro</a>
         </div>
-                       <nav class="nav-menu">
-                   <a href="/dashboard" class="nav-link">Dashboard</a>
-                   <a href="/classlist" class="nav-link">Classes</a>
-                   <a href="/createclass" class="nav-link">Create Class</a>
-               </nav>
-        <div class="user-info">
+
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
             <% if (user) { %>
-                <span class="user-name">Welcome, <%= user.FULLNAME %></span>
+                <a href="/dashboard" class="nav-item">🏠 Home</a>
+
+                <% if (user.ROLE === 'admin') { %>
+                    <a href="/admin-panel9920867077@AdilAbullahaUroojFatir" class="nav-item">⚙️ Admin</a>
+                <% } %>
+
+                <% if (user.ROLE === 'teacher' || user.ROLE === 'admin') { %>
+                    <a href="/classlist" class="nav-item">📋 Classes</a>
+                    <a href="/createclass" class="nav-item">➕ New Class</a>
+                    <a href="/teacher-students-summary" class="nav-item">📊 Reports</a>
+                <% } %>
+            <% } %>
+        </div>
+
+        <!-- User Info -->
+        <div class="nav-user">
+            <% if (user) { %>
+                <span class="user-name">👋 <%= user.FULLNAME.split(' ')[0] %></span>
                 <a href="/logout" class="logout-btn">Logout</a>
             <% } else { %>
                 <a href="/login" class="login-btn">Login</a>
-                <a href="/register" class="register-btn">Register</a>
             <% } %>
         </div>
     </div>
-</header>
+</nav>
 
 <style>
-    .header {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        padding: 15px 0;
-        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    .navbar {
+        background: #fff;
+        border-bottom: 2px solid #e9ecef;
+        padding: 1rem 0;
         position: sticky;
         top: 0;
         z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .nav-container {
@@ -38,129 +51,75 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 20px;
+        padding: 0 1rem;
     }
 
-    .logo-link {
-        font-size: 24px;
+    .nav-logo a {
+        font-size: 1.5rem;
         font-weight: bold;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #007bff;
         text-decoration: none;
-        transition: all 0.3s ease;
-    }
-
-    .logo-link:hover {
-        transform: scale(1.05);
     }
 
     .nav-menu {
         display: flex;
-        gap: 30px;
+        gap: 1rem;
         align-items: center;
     }
 
-    .nav-link {
+    .nav-item {
         color: #495057;
         text-decoration: none;
-        font-weight: 600;
-        padding: 8px 16px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        position: relative;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: 500;
+        transition: all 0.2s;
     }
 
-    .nav-link:hover {
-        color: #667eea;
-        background: rgba(102, 126, 234, 0.1);
-        transform: translateY(-2px);
+    .nav-item:hover {
+        background: #f8f9fa;
+        color: #007bff;
     }
 
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 50%;
-        width: 0;
-        height: 2px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        transition: all 0.3s ease;
-        transform: translateX(-50%);
-    }
-
-    .nav-link:hover::after {
-        width: 80%;
-    }
-
-    .user-info {
+    .nav-user {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 1rem;
     }
 
     .user-name {
-        font-weight: 600;
-        color: #495057;
-        font-size: 14px;
+        color: #6c757d;
+        font-weight: 500;
     }
 
-    .logout-btn {
-        background: linear-gradient(135deg, #dc3545, #c82333);
+    .logout-btn, .login-btn {
+        background: #dc3545;
         color: white;
-        padding: 8px 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
         text-decoration: none;
-        font-size: 14px;
-    }
-
-    .logout-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
-    }
-
-    .login-btn, .register-btn {
-        padding: 8px 16px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
     }
 
     .login-btn {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
+        background: #007bff;
     }
 
-    .register-btn {
-        background: linear-gradient(135deg, #28a745, #20c997);
-        color: white;
-    }
-
-    .login-btn:hover, .register-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    .logout-btn:hover, .login-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
     }
 
     @media (max-width: 768px) {
         .nav-container {
             flex-direction: column;
-            gap: 15px;
+            gap: 1rem;
         }
-        
+
         .nav-menu {
-            gap: 15px;
-        }
-        
-        .user-info {
-            flex-direction: column;
-            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
     }
-</style> 
+</style>

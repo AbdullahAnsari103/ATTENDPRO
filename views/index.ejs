@@ -399,7 +399,10 @@
         /* Advanced Button Design */
         .btn-container {
             position: relative;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
         }
 
         .btn {
@@ -468,6 +471,42 @@
 
         .btn:active {
             transform: translateY(-3px) scale(1.01);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--accent), #f59e0b);
+            box-shadow: 
+                0 20px 40px rgba(236, 72, 153, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 30px 60px rgba(236, 72, 153, 0.5),
+                0 15px 30px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 
+                0 20px 40px rgba(16, 185, 129, 0.4),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 30px 60px rgba(16, 185, 129, 0.5),
+                0 15px 30px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            filter: brightness(1.1);
         }
 
         /* Enhanced Decorative Elements */
@@ -773,7 +812,13 @@
 
             <div class="btn-container">
                 <a href="/classlist" aria-label="Enter Class Section to manage attendance">
-                    <button class="btn" type="button">Enter Class Section</button>
+                    <button class="btn" type="button">Teacher Portal</button>
+                </a>
+                <a href="/student-portal" aria-label="Student Portal - Check attendance and timetable">
+                    <button class="btn btn-secondary" type="button">Student Portal</button>
+                </a>
+                <a href="/student-attendance-summary" aria-label="View comprehensive attendance summary">
+                    <button class="btn btn-accent" type="button">📊 Attendance Summary</button>
                 </a>
             </div>
         </article>
