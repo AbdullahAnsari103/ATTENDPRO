@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: attendpro
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: BASE_URL
+        sync: false
+      - key: TRUST_PROXY
+        value: true
+      - key: FORCE_HTTPS
+        value: true
+      - key: ENABLE_COMPRESSION
+        value: true
+      - key: CACHE_STATIC_FILES
+        value: true
+    healthCheckPath: /health
