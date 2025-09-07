@@ -90,7 +90,6 @@ npm run dev
 ### 5. Access Application
 - **Main Application**: http://localhost:3000
 - **Student Portal**: http://localhost:3000/student-portal
-- **Admin Panel**: http://localhost:3000/admin-panel9920867077@AdilAbullahaUroojFatir
 
 ## 📁 Project Structure
 
@@ -325,10 +324,8 @@ POST /student-portal         # Student portal login
 GET  /student-dashboard/:id  # Individual student dashboard
 ```
 
-### Admin Panel
-```
-GET /admin-panel9920867077@AdilAbullahaUroojFatir  # Admin panel (obfuscated)
-```
+
+
 
 ## 🚀 Deployment
 
