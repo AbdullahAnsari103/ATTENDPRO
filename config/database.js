@@ -4,10 +4,11 @@ const { logger, logDatabaseOperation, logError } = require('../utils/logger');
 // Database configuration based on environment
 const getDatabaseConfig = () => {
     const isProduction = process.env.NODE_ENV === 'production';
+    const isRailway = !!process.env.RAILWAY_ENVIRONMENT;
     
     return {
         // Connection URL
-        uri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/attendpro',
+        uri: process.env.MONGODB_URI || process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/attendpro',
         
         // Connection options
         options: {

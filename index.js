@@ -665,12 +665,21 @@ const startServer = async () => {
         await initializeDatabase();
         
         // Start server
-        const server = app.listen(config.PORT, config.HOST, () => {
-            logger.info(`🚀 AttendPro Server started successfully!`);
-            logger.info(`📍 URL: ${config.BASE_URL}`);
-            logger.info(`🌍 Environment: ${config.NODE_ENV}`);
-            logger.info(`🔒 Security: ${config.SESSION_SECRET === 'dev-secret-change-in-production' ? 'Development' : 'Production'}`);
-        });
+        // Railway assigns PORT automatically, don't bind to HOST in production
+        const server = config.NODE_ENV === 'production' && process.env.RAILWAY_ENVIRONMENT
+            ? app.listen(config.PORT, () => {
+                logger.info(`🚀 AttendPro Server started successfully on Railway!`);
+                logger.info(`📍 Port: ${config.PORT}`);
+                logger.info(`🌍 Environment: ${config.NODE_ENV}`);
+                logger.info(`🚂 Railway Environment: ${process.env.RAILWAY_ENVIRONMENT}`);
+                logger.info(`🔒 Security: ${config.SESSION_SECRET === 'dev-secret-change-in-production' ? 'Development' : 'Production'}`);
+            })
+            : app.listen(config.PORT, config.HOST, () => {
+                logger.info(`🚀 AttendPro Server started successfully!`);
+                logger.info(`📍 URL: ${config.BASE_URL}`);
+                logger.info(`🌍 Environment: ${config.NODE_ENV}`);
+                logger.info(`🔒 Security: ${config.SESSION_SECRET === 'dev-secret-change-in-production' ? 'Development' : 'Production'}`);
+            });
         
         // Setup graceful shutdown
         gracefulShutdown(server);
